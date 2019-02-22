@@ -1,3 +1,7 @@
+import Router from 'next/router';
+
+import { authenticate } from '../misc/util';
+
 export default class LoginForm extends React.Component {
   state = {
     email: '',
@@ -8,12 +12,17 @@ export default class LoginForm extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     const { email, password } = this.state;
-    console.log(email + password);
-    // authenticate(email, password);
+    // post to back end for authentication
+
+    const authenticated = await authenticate(email, password);
+    console.log(authenticated);
+    if (authenticated) {
+      Router.push('/profile');
+    }
   };
 
   render() {
